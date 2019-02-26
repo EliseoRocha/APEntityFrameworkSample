@@ -55,10 +55,37 @@ namespace APEntityFrameworkSample
             Vendors singleVen = (from v in context.Vendors
                                  where v.VendorName == "IBM"
                                  select v).SingleOrDefault();
-                                    //FirstOrDefault()
-                                    //Return first record or null if no records
+            //FirstOrDefault()
+            //Return first record or null if no records
+
+            //Pretend this has vendors in it
+            List<Vendors> testList = new List<Vendors>();
+            List<Vendors> caVendors2 = (from v in testList
+                                       where v.VendorState == "CA"
+                                       select v).ToList();
+
+            //Get list of vendor names and phones
+            //SELECT VendorName, VendorPhone FROM Vendors
+            var contactInfo = (from v in context.Vendors
+                              select new VendorContact
+                              {
+                                  VendorName = v.VendorName,
+                                  VendorPhone = v.VendorPhone
+                              }).ToList();
+
+            foreach (var v in contactInfo)
+            {
+                Console.WriteLine(v.VendorName);
+            }
 
             Console.ReadKey();
         }
+    }
+
+    class VendorContact
+    {
+        public string VendorName { get; set; }
+
+        public string VendorPhone { get; set; }
     }
 }
